@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node        
+      - xpack.security.enabled=false
+      - xpack.monitoring.collection.enabled=true
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.14.3
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - XPACK_SECURITY_ENABLED=false
+    ports:
+      - "5601:5601"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.14.3
+    container_name: logstash
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+    environment:
+      - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
+    ports:
+      - "5044:5044"
+
+  city-service:
+    build: ./city-service
+    image: city-service:local
+    container_name: city-service
+    environment:
+      - SPRING_APPLICATION_NAME=city-service
+      - SERVER_PORT=8080
+    ports:
+      - "8081:8080"
+
+  weather-service:
+    build: ./weather-service
+    image: weather-service:local
+    container_name: weather-service
+    environment:
+      - SPRING_APPLICATION_NAME=weather-service
+      - SERVER_PORT=8080
+    ports:
+      - "8082:8080"
+
+  info-service:
+    build: ./info-service
+    image: info-service:local
+    container_name: info-service
+    environment:
+      - SPRING_APPLICATION_NAME=info-service
+      - SERVER_PORT=8080
+    ports:
+      - "8083:8080"
+
+  gateway-service:
+    build: ./gateway-service
+    image: gateway-service:local
+    container_name: gateway-service
+    environment:
+      - SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_CITYCLIENT_URL=http://city-service:8080/internal/city
+      - SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_WEATHERCLIENT_URL=http://weather-service:8080/internal/weather
+      - SPRING_CLOUD_OPENFEIGN_CLIENT_CONFIG_INFOCLIENT_URL=http://info-service:8080/internal/info
+    ports:
+      - "8080:8080"
+
+volumes:
+  esdata:
+

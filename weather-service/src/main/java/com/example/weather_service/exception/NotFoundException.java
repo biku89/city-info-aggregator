@@ -1,0 +1,9 @@
+package com.example.weather_service.exception;
+
+import org.springframework.http.HttpStatus;
+
+public class NotFoundException extends WeatherServiceException {
+    public NotFoundException(String message) {
+        super(message, HttpStatus.NOT_FOUND);
+    }
+}
