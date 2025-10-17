@@ -1,6 +1,9 @@
 package com.example.gateway_service.model;
 
+import lombok.Builder;
+
 import java.util.List;
 
-public record InfoResponseDTO (List<InfoDTO> info, FxDTO fx){
+@Builder
+public record InfoResponseDTO(List<InfoDTO> info, FxDTO fx){
 }

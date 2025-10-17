@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/internal/city")
 public class CityController {
     private final CityService cityService;
+
     @GetMapping
     public CityDTO getCity(@RequestParam String query){
         return cityService.getCity(query);

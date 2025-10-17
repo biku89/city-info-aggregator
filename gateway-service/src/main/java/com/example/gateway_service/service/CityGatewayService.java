@@ -23,7 +23,10 @@ public class CityGatewayService {
         WeatherDTO weatherDTO = weatherClient.getWeather(cityDTO.lat(),cityDTO.lon(),units);
         InfoResponseDTO infoResponseDTO = infoClient.getInfo(cityDTO.lat(), cityDTO.lon(),lang, limit);
 
-        MetaDTO metaDTO = new MetaDTO(LocalDateTime.now(), List.of("OpenWeather","Wikipedia","Frankfurter"));
+        MetaDTO metaDTO = new MetaDTO(LocalDateTime.now(), List.of(
+                ConstantsClass.openWeather,
+                ConstantsClass.wikipedia,
+                ConstantsClass.frankfurter));
 
         return new CityAggregatorResponseDTO(cityDTO,weatherDTO,infoResponseDTO.info(),infoResponseDTO.fx(),metaDTO);
     }

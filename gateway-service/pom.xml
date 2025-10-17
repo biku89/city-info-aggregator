@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>gatewayService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<name>gatewayService</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -38,6 +38,11 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>6.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>

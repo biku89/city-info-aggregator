@@ -5,6 +5,7 @@ import com.example.city_service.clientNominatim.model.NominatimResponseDTO;
 import com.example.city_service.exception.NotFoundException;
 import com.example.city_service.mapper.CityMapper;
 import com.example.city_service.model.CityDTO;
+import com.example.city_service.model.ConstantsClass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,9 @@ public class CityService {
     private final NominatimClient nominatimClient;
 
     public CityDTO getCity(String query) {
-        List<NominatimResponseDTO> nominationResponseDTO = nominatimClient.getCity(query, "json", 1, 1);
+        List<NominatimResponseDTO> nominationResponseDTO = nominatimClient.getCity(query, ConstantsClass.format, 1, 1);
         CityServiceValidator.cityNotFound(nominationResponseDTO);
         return cityMapper.toDTO(nominationResponseDTO.getFirst());
-
     }
 }
 

@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
 @Getter
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(CityServiceException.class)
     public ResponseEntity<ErrorMessage> handleCityServiceException(CityServiceException ex) {
         ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), ex.getHttpStatus(), OffsetDateTime.now());

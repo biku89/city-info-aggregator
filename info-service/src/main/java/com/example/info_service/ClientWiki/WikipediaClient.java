@@ -10,7 +10,7 @@ import java.util.List;
 
 @FeignClient(name = "wikipediaClient", configuration = FeignConfig.class)
 public interface WikipediaClient {
-    @GetMapping( value = "/search/page",headers = "User-Agent=city-info-aggregator/1.0")
+    @GetMapping( value = "/search/page", headers = "User-Agent=city-info-aggregator/1.0")
     WikipediaResponseDTO getInfo(
             @RequestParam ("q") String query,
             @RequestParam ("limit") int limit
